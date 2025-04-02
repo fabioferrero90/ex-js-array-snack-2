@@ -79,7 +79,7 @@ const availableBooks = books.filter((book) => book.available === true);
 console.log(availableBooks);
 
 const discountedBooks = availableBooks.map((book) => {
-  return { ...book, price: (parseInt(book.price) * 0.8).toFixed(2) + "€" };
+  return { ...book, price: (book.price.split("€")[0] * 0.8).toFixed(2) + "€" };
 });
 console.log(discountedBooks);
 
@@ -132,6 +132,8 @@ console.log("**** SNACK 5 ****")
 console.log("*****************")
 console.log("  ")
 
+const apiUrl = "https://boolean-spec-frontend.vercel.app/freetestapi/books/"
+
 async function fetchJson(url) {
   const response = (await fetch(url));
   return await response.json();
@@ -139,9 +141,8 @@ async function fetchJson(url) {
 
 async function getBooks(ids) {
   try {
-    const bookFetch = await Promise.all(ids.map(id => fetchJson(`https://boolean-spec-frontend.vercel.app/freetestapi/books/${id}`)));
+    const bookFetch = await Promise.all(ids.map(id => fetchJson(`${apiUrl}${id}`)));
     return bookFetch;
-
   }
   catch (error) {
     console.error(error);
